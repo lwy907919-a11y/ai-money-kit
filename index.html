@@ -119,6 +119,46 @@ footer a { color: #f59e0b; }
 .afdian-notice p { margin: 0; font-size: 1.05rem; }
 .afdian-notice a { display: inline-block; background: white; color: #ff6b6b; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 12px; }
 .afdian-notice a:hover { transform: translateY(-2px); }
+
+/* Wizard Embed */
+.wizard-section { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); padding: 60px 24px; }
+.wizard-inner { max-width: 720px; margin: 0 auto; }
+.wizard-title { color: #fff; font-size: 32px; font-weight: 900; text-align: center; margin-bottom: 8px; }
+.wizard-sub { color: #94a3b8; text-align: center; margin-bottom: 32px; font-size: 16px; }
+.wizard-card { background: #1e293b; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.wizard-header { background: #334155; padding: 12px 20px; display: flex; align-items: center; gap: 8px; }
+.wizard-dots { display: flex; gap: 6px; }
+.wizard-dot { width: 12px; height: 12px; border-radius: 50%; }
+.wizard-dot-r { background: #ef4444; }
+.wizard-dot-y { background: #fbbf24; }
+.wizard-dot-g { background: #22c55e; }
+.wizard-tab { background: #0f172a; color: #94a3b8; padding: 4px 12px; border-radius: 6px; font-size: 13px; margin-left: 12px; }
+.wizard-messages { padding: 20px; max-height: 340px; overflow-y: auto; }
+.wizard-msg { display: flex; gap: 10px; margin-bottom: 14px; align-items: flex-start; }
+.wizard-msg.user { flex-direction: row-reverse; }
+.wizard-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.wizard-avatar.ai { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); }
+.wizard-avatar.user { background: #475569; }
+.wizard-bubble { max-width: 72%; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
+.wizard-bubble.ai { background: #334155; color: #e2e8f0; border-bottom-left-radius: 4px; }
+.wizard-bubble.user { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); color: #fff; border-bottom-right-radius: 4px; }
+.wizard-typing { display: inline-flex; gap: 4px; margin-left: 42px; margin-bottom: 14px; }
+.wizard-typing span { width: 7px; height: 7px; background: #64748b; border-radius: 50%; animation: wdunk 1.2s infinite; }
+.wizard-typing span:nth-child(2) { animation-delay: 0.2s; }
+.wizard-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes wdunk { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-6px);opacity:1} }
+.wizard-input-row { display: flex; gap: 8px; padding: 14px 16px; background: #0f172a; }
+.wizard-input { flex: 1; padding: 10px 14px; background: #1e293b; border: 1px solid #334155; border-radius: 10px; color: #fff; font-size: 14px; outline: none; font-family: inherit; }
+.wizard-input:focus { border-color: #f59e0b; }
+.wizard-input::placeholder { color: #64748b; }
+.wizard-send { padding: 10px 20px; background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 14px; white-space: nowrap; }
+.wizard-send:disabled { opacity: 0.5; cursor: not-allowed; }
+.wizard-cta-row { text-align: center; padding: 16px 20px; background: #0f172a; border-top: 1px solid #1e293b; }
+.wizard-cta { display: inline-block; background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); color: #fff; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: 800; font-size: 15px; }
+.wizard-note { color: #64748b; font-size: 12px; margin-top: 8px; }
+.wizard-qr { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
+.wizard-qr-btn { padding: 6px 14px; background: #1e293b; border: 1px solid #334155; border-radius: 20px; color: #94a3b8; font-size: 13px; cursor: pointer; transition: all .15s; }
+.wizard-qr-btn:hover { background: #f59e0b; color: #fff; border-color: #f59e0b; }
 </style>
 </head>
 <body>
@@ -144,6 +184,78 @@ footer a { color: #f59e0b; }
     <p style="font-size: 14px; color: #94a3b8; margin-top: 16px;">PayPal.me/hzylw/99 · One-time payment · 30-day refund · <a href="https://lwy907919-a11y.github.io/ai-money-kit-members/" style="color: #fde047;">Members access</a> included</p>
   </div>
 </div>
+
+<!-- AI Wizard Live Demo -->
+<section class="wizard-section">
+  <div class="wizard-inner">
+    <h2 class="wizard-title">🤖 Try It Right Now — Ask the AI</h2>
+    <p class="wizard-sub">Tell it what you do. It gives you a complete AI business plan in 3 minutes.</p>
+    <div class="wizard-card">
+      <div class="wizard-header">
+        <div class="wizard-dots">
+          <div class="wizard-dot wizard-dot-r"></div>
+          <div class="wizard-dot wizard-dot-y"></div>
+          <div class="wizard-dot wizard-dot-g"></div>
+        </div>
+        <div class="wizard-tab">🤖 AI Money Kit Wizard</div>
+      </div>
+      <div class="wizard-messages" id="wizMessages">
+        <div class="wizard-msg">
+          <div class="wizard-avatar ai">🤖</div>
+          <div class="wizard-bubble ai">Hi! I'm your AI Money Kit advisor. Tell me what you do, and I'll build you a complete AI business plan in minutes.
+
+What best describes your situation?</div>
+        </div>
+        <div class="wizard-msg user">
+          <div class="wizard-avatar user">👤</div>
+          <div class="wizard-bubble user">I'm a freelancer looking to add AI services</div>
+        </div>
+        <div class="wizard-msg">
+          <div class="wizard-avatar ai">🤖</div>
+          <div class="wizard-bubble ai">Perfect — AI services are one of the fastest ways to charge premium rates right now.
+
+Here's your plan:
+
+**Step 1: Pick Your Niche**
+Best entry points with proven demand:
+→ AI Resume Optimizer ($99-299/resume, high volume)
+→ AI Cold Email Agency ($2K-5K/mo retainer)
+→ AI Lead Gen ($20-100/qualified lead)
+
+**Step 2: Use AI to Deliver (not to learn)**
+Don't spend 3 months learning AI. Use these tools to deliver service immediately:
+• Gemini API + custom prompts for resume work
+• Cold email tools (Instantly, Apollo) for outreach
+• Existing AI workflows as your service offering
+
+**Step 3: Land Your First Client in 14 Days**
+→ Offer free audit to 5 prospects
+→ Use outreach templates we provide
+→ Charge $500/mo trial → convert to $1.5K/mo
+
+Want me to go deeper on any of these steps?</div>
+        </div>
+      </div>
+      <div class="wizard-typing" id="wizTyping" style="display:none;">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="wizard-input-row">
+        <input class="wizard-input" id="wizInput" type="text" placeholder="Try: 'I run a small restaurant' or 'I'm a recent grad'..." autocomplete="off">
+        <button class="wizard-send" id="wizSend" onclick="wizSend()">Ask AI</button>
+      </div>
+      <div class="wizard-cta-row">
+        <a href="#pricing" class="wizard-cta">🚀 Get the Full AI Money Kit — $49 →</a>
+        <p class="wizard-note">5 AI systems · One-time payment · 30-day money-back</p>
+        <div class="wizard-qr">
+          <button class="wizard-qr-btn" onclick="wizQuick(this)">🍜 Restaurant</button>
+          <button class="wizard-qr-btn" onclick="wizQuick(this)">💼 Freelancer</button>
+          <button class="wizard-qr-btn" onclick="wizQuick(this)">📄 Job Seeker</button>
+          <button class="wizard-qr-btn" onclick="wizQuick(this)">🏪 Small Biz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
   <div class="container">
 
@@ -567,5 +679,109 @@ footer a { color: #f59e0b; }
 </div>
 </div>
 </footer>
+<script>
+(function(){
+  var WIZ_SYSTEM = `You are an expert AI business advisor for the AI Money Kit — a toolkit that helps people build AI-powered income streams without coding.
+
+Your personality: direct, practical, no fluff. You give specific recommendations, not vague advice.
+
+When someone tells you their situation, you:
+1. Identify the BEST AI business system for them from these 5 options:
+   - AI Resume Service ($99-299/resume, high demand)
+   - AI Cold Email Agency ($2K-5K/mo retainer)
+   - AI Content Creation ($500-2K/mo per client)
+   - AI Lead Generation ($20-100/qualified lead)
+   - AI Customer Service Agency ($1K-3K/mo per client)
+
+2. Give a SPECIFIC, ACTIONABLE plan with:
+   - The exact service to offer
+   - Pricing to charge
+   - Tools to use (no-code tools)
+   - First steps to take today
+   - How to land first client in 14 days
+
+3. Keep responses concise but rich. Use bold for key numbers/prices. No long paragraphs.`;
+
+  var GEM_KEY = 'AIzaSyBfnSjiAI-P3lWi93rH2MUt60RNu1aN-vI';
+  var MODEL = 'gemini-1.5-flash';
+  var history = [{role:'user',parts:[{text:'You are an AI business advisor.'}]},{role:'model',parts:[{text:'Got it. Tell me what you do and I\'ll give you a specific AI business plan.'}]}];
+  var busy = false;
+
+  function scrollBottom() {
+    var el = document.getElementById('wizMessages');
+    if(el) el.scrollTop = el.scrollHeight;
+  }
+
+  function addMsg(role, text) {
+    var ms = document.getElementById('wizMessages');
+    if(!ms) return;
+    var av = role === 'user' ? 'user' : 'ai';
+    var em = role === 'user' ? '👤' : '🤖';
+    var div = document.createElement('div');
+    div.className = 'wizard-msg ' + (role==='user' ? 'user' : '');
+    div.innerHTML = '<div class="wizard-avatar '+av+'">'+em+'</div><div class="wizard-bubble '+av+'"></div>';
+    div.querySelector('.wizard-bubble').textContent = text;
+    ms.appendChild(div);
+    scrollBottom();
+  }
+
+  function showTyping(show) {
+    var t = document.getElementById('wizTyping');
+    if(t) t.style.display = show ? 'flex' : 'none';
+    if(show) scrollBottom();
+  }
+
+  async function callGemini(userText) {
+    history.push({role:'user',parts:[{text:userText}]});
+    var body = {contents: history, generationConfig:{maxOutputTokens:800,temperature:0.8} };
+    var url = 'https://generativelanguage.googleapis.com/v1beta/models/'+MODEL+':generateContent?key='+GEM_KEY;
+    var r = await fetch(url, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    var j = await r.json();
+    var reply = (j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts && j.candidates[0].content.parts[0] && j.candidates[0].content.parts[0].text) || 'Sorry, something went wrong. Try again!';
+    history.push({role:'model',parts:[{text:reply}]});
+    return reply;
+  }
+
+  window.wizQuick = function(btn) {
+    if(busy) return;
+    var text = btn.textContent;
+    var prompts = {
+      '🍜 Restaurant': "I run a small restaurant and want to use AI to attract more customers. What should I do?",
+      '💼 Freelancer': "I'm a freelancer and want to add AI services to my offerings. Where do I start?",
+      '📄 Job Seeker': "I'm job hunting and want to use AI to improve my resume and stand out. How?",
+      '🏪 Small Biz': "I run a small retail shop. How can AI help me get more customers and save time?"
+    };
+    var prompt = prompts[text] || text;
+    document.getElementById('wizInput').value = prompt;
+    wizSend();
+  };
+
+  window.wizSend = async function() {
+    var inp = document.getElementById('wizInput');
+    var btn = document.getElementById('wizSend');
+    var text = (inp.value || '').trim();
+    if(!text || busy) return;
+    busy = true; btn.disabled = true; inp.disabled = true;
+    inp.value = '';
+    addMsg('user', text);
+    showTyping(true);
+    try {
+      var reply = await callGemini(text);
+      showTyping(false);
+      addMsg('model', reply);
+    } catch(e) {
+      showTyping(false);
+      addMsg('model', 'Connection error. Please try again in a moment.');
+    }
+    busy = false; btn.disabled = false; inp.disabled = false; inp.focus();
+  };
+
+  var inpEl = document.getElementById('wizInput');
+  if(inpEl) inpEl.addEventListener('keydown', function(e){
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();wizSend();}
+  });
+  scrollBottom();
+})();
+</script>
 </body>
 </html>
