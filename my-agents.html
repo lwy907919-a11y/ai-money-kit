@@ -131,10 +131,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft
 <div class="mini-setup-overlay" id="miniSetup" style="display:none;">
   <div class="mini-setup-card">
     <h2>🚀 设置你的 AI 智能体</h2>
-    <p class="sub">30 秒设置，开始使用。</p>
+    <p class="sub">填邮箱 + 选系统，付款后自动开通。</p>
 
     <div class="opt">
       <input type="text" id="setupName" placeholder="你的称呼（如 力伟 / Liwei）" style="width:100%;">
+    </div>
+    <div class="opt">
+      <input type="email" id="setupEmail" placeholder="邮箱（购买后自动开通）" style="width:100%;">
     </div>
 
     <div class="opt" data-value="resume" data-multi="true">📄 简历优化</div>
@@ -149,10 +152,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft
 </div>
 
 <script>
-// ============ Gemini API ============
-const GEMINI_KEY = atob('QVEuQWI4Uk42SnNyX3QtZUZ5SWRYdGdVelJqakZtcVJVcGN0Ynh5SGx1cW54SWFEelVTdmc=');
-const MODEL = 'gemini-flash-lite-latest';
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_KEY}`;
+// ============ Backend (Cloudflare Worker) ============
+const BACKEND_URL = 'https://ai-money-kit-backend.27ce068ac07657f51c0ab8c2475fe117.workers.dev';
+// Backend handles Gemini proxy + payment verification
+// All chat requests go through backend; users must be in KV to chat
 
 // ============ 5 AI Systems ============
 const SYSTEMS = {
@@ -288,74 +291,47 @@ const TIER_SYSTEMS = {
 };
 
 
-// ============ Paywall (Trial Limit) ============
-const TRIAL_LIMIT = 5; // 5 free messages per day
-function getTrialState() {
-  const today = new Date().toISOString().split('T')[0];
-  const stored = localStorage.getItem('my_agents_trial');
-  if (!stored) return { date: today, count: 0 };
-  const state = JSON.parse(stored);
-  if (state.date !== today) return { date: today, count: 0 };
-  return state;
+// ============ Lock / Unlock (backend-authoritative) ============
+// Backend (Cloudflare Worker) checks KV for paid email. If not paid, returns 403.
+// Frontend just shows the right message; no client-side trial.
+async function verifyEmailWithBackend(email) {
+  if (!email) return { paid: false };
+  try {
+    const resp = await fetch(`${BACKEND_URL}/api/verify?email=${encodeURIComponent(email)}`);
+    if (!resp.ok) return { paid: false };
+    return await resp.json();
+  } catch (e) {
+    console.error('verify error:', e);
+    return { paid: false, error: e.message };
+  }
 }
-function incrementTrial() {
-  const state = getTrialState();
-  state.count++;
-  localStorage.setItem('my_agents_trial', JSON.stringify(state));
-  return state.count;
-}
-function isTrialExhausted() {
-  // Real paid users bypass trial
-  if (isPaid) return false;
-  return getTrialState().count >= TRIAL_LIMIT;
-}
-function showPaywall(sysKey) {
+
+function showLockedMessage(sysKey, reason) {
   const input = document.getElementById('input-' + sysKey);
   const sendBtn = document.getElementById('sendBtn-' + sysKey);
-  if (input) { input.disabled = true; input.placeholder = '试用已用完 — 升级到完整版'; }
+  if (input) { input.disabled = true; input.placeholder = '购买后即可使用 — 见下方链接'; }
   if (sendBtn) sendBtn.disabled = true;
-  // Show paywall banner in current panel
   const messages = document.getElementById('messages-' + sysKey);
-  if (messages && !document.getElementById('paywallBanner-' + sysKey)) {
-    const paywall = document.createElement('div');
-    paywall.id = 'paywallBanner-' + sysKey;
-    paywall.style.cssText = 'background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); color: white; padding: 20px; border-radius: 12px; margin: 16px 0; text-align: center;';
-    paywall.innerHTML = `
-      <div style="font-size: 1.3rem; font-weight: 800; margin-bottom: 8px;">🔒 免费试用已用完</div>
-      <p style="margin: 0 0 12px; opacity: 0.95;">你已经用了 ${TRIAL_LIMIT} 条免费消息。升级到 AI Money Kit 获得：</p>
+  if (messages && !document.getElementById('lockBanner-' + sysKey)) {
+    const lock = document.createElement('div');
+    lock.id = 'lockBanner-' + sysKey;
+    lock.style.cssText = 'background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); color: white; padding: 20px; border-radius: 12px; margin: 16px 0; text-align: center;';
+    lock.innerHTML = `
+      <div style="font-size: 1.3rem; font-weight: 800; margin-bottom: 8px;">🔒 这是付费产品</div>
+      <p style="margin: 0 0 12px; opacity: 0.95;">${reason || '购买后即可使用 5 个 AI 智能体，无限对话。'}</p>
       <ul style="text-align: left; max-width: 380px; margin: 12px auto; opacity: 0.95; font-size: 0.9rem;">
-        <li>✅ 无限对话次数（不设上限）</li>
-        <li>✅ 5 个 AI 智能体全开</li>
+        <li>✅ 5 个 AI 智能体全开（简历/内容/机器人/上架/助理）</li>
+        <li>✅ 无限对话次数</li>
         <li>✅ 永久个人 URL（多设备同步）</li>
         <li>✅ 终身免费更新</li>
       </ul>
       <div style="margin-top: 12px;">
-        <a href="https://lwy9079.gumroad.com/l/hzylw" target="_blank" style="display: inline-block; background: white; color: #ee0979; padding: 12px 32px; border-radius: 24px; font-weight: 800; text-decoration: none; font-size: 1rem;">⭐ 立即升级 — $5 起</a>
+        <a href="https://lwy9079.gumroad.com/l/hzylw" target="_blank" style="display: inline-block; background: white; color: #ee0979; padding: 12px 32px; border-radius: 24px; font-weight: 800; text-decoration: none; font-size: 1rem;">⭐ 立即购买 — $5 起</a>
       </div>
-      <p style="margin-top: 12px; font-size: 0.8rem; opacity: 0.8;">一次性付费 · 无订阅 · 30 天回本保证</p>
+      <p style="margin-top: 12px; font-size: 0.8rem; opacity: 0.8;">一次性付费 · 无订阅</p>
     `;
-    messages.appendChild(paywall);
+    messages.appendChild(lock);
     messages.scrollTop = messages.scrollHeight;
-  }
-}
-function updateTrialIndicator() {
-  // Update header to show remaining free messages
-  const state = getTrialState();
-  const remaining = Math.max(0, TRIAL_LIMIT - state.count);
-  if (!isPaid && remaining <= 2 && remaining > 0) {
-    let indicator = document.getElementById('trialIndicator');
-    if (!indicator) {
-      indicator = document.createElement('div');
-      indicator.id = 'trialIndicator';
-      indicator.style.cssText = 'background: #fff3cd; color: #6d4c00; padding: 6px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;';
-      const brand = document.querySelector('.brand');
-      if (brand) brand.appendChild(indicator);
-    }
-    indicator.textContent = '🎁 还剩 ' + remaining + ' 条免费消息';
-  }
-  if (remaining === 0 && !isPaid) {
-    let indicator = document.getElementById('trialIndicator');
-    if (indicator) indicator.remove();
   }
 }
 
@@ -446,6 +422,46 @@ function init() {
   showMiniSetup();
 }
 
+// ============ Background verify (proactive) ============
+// After init sets isPaid=true (from URL params or localStorage), verify with backend.
+// If email not in KV, downgrade to isPaid=false and show locked message.
+async function verifyOnLoad() {
+  if (!isPaid || !config || !config.email) {
+    // No email or not paid: if not paid, show locked message in current panel
+    if (!isPaid && config && config.systems && config.systems.length > 0) {
+      const firstSys = config.systems[0];
+      const messages = document.getElementById('messages-' + firstSys);
+      if (messages && messages.children.length === 0) {
+        showLockedMessage(firstSys, '购买后 1 分钟内自动开通，刷新页面即可使用。');
+      }
+    }
+    return;
+  }
+
+  try {
+    const result = await verifyEmailWithBackend(config.email);
+    if (!result.paid) {
+      // Email not in KV (e.g. localStorage from before refund)
+      isPaid = false;
+      localStorage.setItem('my_agents_paid', 'false');
+      const firstSys = (config.systems && config.systems[0]) || 'resume';
+      showLockedMessage(firstSys, '邮箱 <strong>' + config.email + '</strong> 还未在购买名单中。付款后刷新页面即可。');
+    } else {
+      // Backend confirms paid: update tier from authoritative source
+      if (result.tier && result.tier !== config.tier) {
+        config.tier = result.tier;
+        config.systems = TIER_SYSTEMS[result.tier] || config.systems;
+        saveConfig();
+      }
+    }
+  } catch (e) {
+    console.log('Verify on load failed:', e);
+  }
+}
+
+// Run background verify after page loads
+setTimeout(verifyOnLoad, 300);
+
 function showAutoDeployed() {
   document.getElementById('autoBanner').style.display = 'block';
 }
@@ -460,31 +476,57 @@ function hideMiniSetup() {
 
 function finishMiniSetup() {
   const name = document.getElementById('setupName').value.trim() || 'User';
+  const email = (document.getElementById('setupEmail') && document.getElementById('setupEmail').value || '').trim().toLowerCase();
   const selected = [...document.querySelectorAll('.mini-setup-card .opt.selected')].map(el => el.dataset.value).filter(Boolean);
   const systems = selected.length > 0 ? selected : ['resume', 'content', 'chatbot', 'lister', 'assistant'];
   config = {
     name,
+    email: email,
     tier: 'starter',
     systems,
     lang: 'zh',
     createdAt: new Date().toISOString(),
   };
-  // Mini setup is a "trial" — not really paid. But for demo, mark as paid.
-  // Mini setup completion = full access (URL params take priority on real customer visits)
-  isPaid = true;
+  // Mini setup now requires email verification via backend
+  // Until verified, user is NOT paid (cannot use the AI)
+  isPaid = false;
   saveConfig();
   hideMiniSetup();
   buildUI();
   switchSystem(systems[0] || 'resume');
-  if (!localStorage.getItem('my_agents_demo_unlocked')) {
-    // First-time direct visitor: show gentle "buy full version" hint
+
+  // If user provided an email, verify with backend
+  if (email) {
+    setTimeout(async () => {
+      const result = await verifyEmailWithBackend(email);
+      if (result.paid) {
+        isPaid = true;
+        config.tier = result.tier || 'starter';
+        config.systems = TIER_SYSTEMS[result.tier] || systems;
+        saveConfig();
+        // Refresh chat state
+        const firstSys = config.systems[0];
+        loadChat(firstSys);
+        // Show success banner
+        const ok = document.createElement('div');
+        ok.style.cssText = 'background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 16px 20px; text-align: center; border-radius: 8px; margin: 16px 20px;';
+        ok.innerHTML = `✅ 已验证：<strong>${email}</strong> · ${config.tier} 套餐已开通`;
+        const container = document.getElementById('chatPanels');
+        if (container && container.firstChild) container.firstChild.querySelector('.messages').prepend(ok);
+      } else {
+        // Show locked message in current panel
+        showLockedMessage(firstSys, '邮箱 <strong>' + email + '</strong> 还未在购买名单中。付款后刷新页面即可。');
+      }
+    }, 500);
+  } else {
+    // No email: show generic buy message
     setTimeout(() => {
       const buyHint = document.createElement('div');
-      buyHint.style.cssText = 'background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); padding: 12px 20px; text-align: center; border-radius: 8px; margin: 16px 20px; color: #6d4c00; font-size: 0.9rem;';
-      buyHint.innerHTML = '💡 <strong>直接访问体验版</strong> · 完整 5 系统 + 永久个人 URL：<a href="https://lwy9079.gumroad.com/l/hzylw" target="_blank" style="color: #d6249f; font-weight: 700;">$5-$25 购买</a>';
+      buyHint.style.cssText = 'background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); padding: 16px 20px; text-align: center; border-radius: 8px; margin: 16px 20px; color: #6d4c00; font-size: 0.9rem;';
+      buyHint.innerHTML = '💡 <strong>填邮箱即可解锁</strong> — 付款后 1 分钟内自动开通：<a href="https://lwy9079.gumroad.com/l/hzylw" target="_blank" style="color: #d6249f; font-weight: 700;">$5-$25 购买</a>';
       const container = document.getElementById('chatPanels');
       if (container && container.firstChild) container.firstChild.querySelector('.messages').prepend(buyHint);
-    }, 800);
+    }, 500);
   }
 }
 
@@ -559,7 +601,6 @@ function buildUI() {
   });
 
   systems.forEach(sysKey => loadChat(sysKey));
-  updateTrialIndicator();
 }
 
 function switchSystem(sysKey) {
@@ -658,12 +699,8 @@ function clearChat(sysKey) {
 }
 
 async function sendMessage(sysKey) {
-  if (!isPaid && isTrialExhausted()) {
-    showPaywall(sysKey);
-    return;
-  }
-  if (!isPaid && isTrialExhausted()) {
-    alert('请先完成设置。');
+  if (!isPaid) {
+    showLockedMessage(sysKey, '请先购买或访问你的个人链接（付款后会自动开通）。');
     return;
   }
   const input = document.getElementById(`input-${sysKey}`);
@@ -685,18 +722,15 @@ async function sendMessage(sysKey) {
     chatStates[sysKey].push({ role: 'user', content: text });
     chatStates[sysKey].push({ role: 'assistant', content: reply });
     localStorage.setItem('agent_chat_' + sysKey, JSON.stringify(chatStates[sysKey]));
-
-    // Increment trial counter and check
-    if (!isPaid) {
-      incrementTrial();
-      updateTrialIndicator();
-      if (isTrialExhausted()) {
-        setTimeout(() => showPaywall(sysKey), 500);
-      }
-    }
   } catch (e) {
     removeTypingIndicator(sysKey);
-    addMessage(sysKey, 'ai', '❌ 出错了：' + e.message);
+    // Backend rejection: lock this system
+    if (e.message && e.message.startsWith('LOCKED:')) {
+      const reason = e.message.substring(7);
+      showLockedMessage(sysKey, reason);
+    } else {
+      addMessage(sysKey, 'ai', '❌ 出错了：' + e.message);
+    }
   } finally {
     input.disabled = false;
     document.getElementById(`sendBtn-${sysKey}`).disabled = false;
@@ -714,40 +748,33 @@ async function callGemini(sysKey, userMessage) {
     { role: 'user', content: userMessage }
   ];
 
-  const contents = [];
-  for (const m of fullMessages) {
-    contents.push({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }]
-    });
-  }
-
-  const requestBody = {
-    contents,
-    systemInstruction: { parts: [{ text: fullPrompt }] },
-    generationConfig: { temperature: 0.85, maxOutputTokens: 2048, topP: 0.95 },
-    safetySettings: [
-      { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
-      { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
-      { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
-      { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
-    ]
-  };
-
-  const response = await fetch(API_URL, {
+  // Call our backend (it proxies Gemini, validates paid email in KV)
+  const response = await fetch(`${BACKEND_URL}/api/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(requestBody)
+    body: JSON.stringify({
+      email: (config && config.email) || '',
+      system: fullPrompt,
+      messages: fullMessages
+    })
   });
+
+  if (response.status === 403) {
+    const errData = await response.json().catch(() => ({}));
+    // Backend says not paid
+    const reason = errData.error === 'not_paid'
+      ? '你的邮箱还未在购买名单中。付款后会自动开通（一般 1 分钟内）。'
+      : '需要购买才能使用。';
+    throw new Error('LOCKED:' + reason);
+  }
 
   if (!response.ok) {
     const errText = await response.text();
     throw new Error('API ' + response.status + ': ' + errText.substring(0, 200));
   }
   const data = await response.json();
-  const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!reply) throw new Error('Empty response from Gemini');
-  return reply;
+  if (!data.text) throw new Error('Empty response from backend');
+  return data.text;
 }
 
 // ============ Personal URL ============
