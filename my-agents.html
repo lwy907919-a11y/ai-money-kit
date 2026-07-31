@@ -295,7 +295,7 @@ const chatStates = {};
 
 // ============ Init ============
 function init() {
-  // 1. Check URL token (auto-deploy)
+  // 1. Check URL token (auto-deploy) — URL ALWAYS WINS over localStorage
   const params = new URLSearchParams(window.location.search);
   const hash = window.location.hash;
 
@@ -315,7 +315,7 @@ function init() {
   }
 
   if (tokenData && tokenData.paid) {
-    // Auto-deploy mode
+    // Auto-deploy mode (token-based) — overrides any localStorage state
     isPaid = true;
     config = {
       name: tokenData.name || 'Customer',
@@ -357,7 +357,7 @@ function init() {
     return;
   }
 
-  // 3. Check localStorage
+  // 3. Check localStorage (only if NO URL auto-deploy)
   const stored = localStorage.getItem('my_agents_config');
   if (stored) {
     try {
@@ -398,16 +398,21 @@ function finishMiniSetup() {
     createdAt: new Date().toISOString(),
   };
   // Mini setup is a "trial" — not really paid. But for demo, mark as paid.
-  isPaid = localStorage.getItem('my_agents_demo_unlocked') === 'true';
+  // Mini setup completion = full access (URL params take priority on real customer visits)
+  isPaid = true;
   saveConfig();
   hideMiniSetup();
   buildUI();
   switchSystem(systems[0] || 'resume');
-  if (!isPaid) {
-    // Show paywall message in first chat
+  if (!localStorage.getItem('my_agents_demo_unlocked')) {
+    // First-time direct visitor: show gentle "buy full version" hint
     setTimeout(() => {
-      alert('🎁 演示模式：可以试用 1 次。\n\n正式版（不限次数 + 5 系统全开）请购买：https://lwy9079.gumroad.com/l/hzylw');
-    }, 500);
+      const buyHint = document.createElement('div');
+      buyHint.style.cssText = 'background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); padding: 12px 20px; text-align: center; border-radius: 8px; margin: 16px 20px; color: #6d4c00; font-size: 0.9rem;';
+      buyHint.innerHTML = '💡 <strong>直接访问体验版</strong> · 完整 5 系统 + 永久个人 URL：<a href="https://lwy9079.gumroad.com/l/hzylw" target="_blank" style="color: #d6249f; font-weight: 700;">$5-$25 购买</a>';
+      const container = document.getElementById('chatPanels');
+      if (container && container.firstChild) container.firstChild.querySelector('.messages').prepend(buyHint);
+    }, 800);
   }
 }
 
