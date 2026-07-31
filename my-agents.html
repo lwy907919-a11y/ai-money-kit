@@ -26,6 +26,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft
 .copy-btn { padding: 6px 14px; background: white; color: #f5576c; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
 .copy-btn:hover { background: #ffe4ec; }
 
+/* Auto-deploy welcome banner */
+.auto-banner { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 18px 24px; border-radius: 12px; margin-bottom: 16px; text-align: center; }
+.auto-banner h2 { font-size: 1.2rem; margin-bottom: 6px; }
+.auto-banner p { opacity: 0.95; font-size: 0.9rem; margin: 0; }
+
 /* Tabs */
 .tabs { display: flex; gap: 6px; background: white; padding: 8px; border-radius: 16px 16px 0 0; box-shadow: 0 -2px 8px rgba(0,0,0,0.05); flex-wrap: wrap; }
 .tab { padding: 10px 18px; background: #f5f7fa; color: #1a1a1a; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
@@ -49,7 +54,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft
 .bubble { max-width: 75%; padding: 12px 16px; border-radius: 16px; line-height: 1.55; font-size: 0.95rem; white-space: pre-wrap; word-wrap: break-word; }
 .bubble.ai { background: #f5f7fa; color: #1a1a1a; border-top-left-radius: 4px; }
 .bubble.user { background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); color: white; border-top-right-radius: 4px; }
-.avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; center; flex-shrink: 0; font-size: 18px; align-items: center; justify-content: center; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
 .avatar.ai { background: #ee0979; color: white; }
 .avatar.user { background: #2a2a2a; color: white; }
 .typing { display: inline-block; }
@@ -68,26 +73,18 @@ body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft
 .input-row button { padding: 12px 24px; background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); color: white; border: none; border-radius: 24px; font-weight: 600; cursor: pointer; font-size: 0.95rem; }
 .input-row button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* Setup wizard */
-.setup-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000; }
-.setup-card { background: white; border-radius: 20px; padding: 32px; max-width: 540px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-.setup-card h2 { font-size: 1.5rem; margin-bottom: 8px; color: #1a1a1a; }
-.setup-card .sub { color: #666; margin-bottom: 24px; font-size: 0.9rem; }
-.setup-step { display: none; }
-.setup-step.active { display: block; }
-.setup-step .q { font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: #1a1a1a; }
-.setup-step .opts { display: flex; flex-direction: column; gap: 10px; }
-.setup-step .opt { padding: 14px 18px; background: #f5f7fa; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
-.setup-step .opt:hover { border-color: #ee0979; background: #fff5f8; }
-.setup-step .opt.selected { background: #fff5f8; border-color: #ee0979; color: #ee0979; font-weight: 600; }
-.setup-step .opt input[type=text] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; font-family: inherit; }
-.setup-step .progress { margin-bottom: 24px; height: 6px; background: #e9ecef; border-radius: 3px; overflow: hidden; }
-.setup-step .progress-bar { height: 100%; background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); transition: width 0.3s; }
-.setup-buttons { display: flex; justify-content: space-between; margin-top: 24px; }
-.setup-buttons button { padding: 10px 20px; border: none; border-radius: 8px; font-size: 0.9rem; cursor: pointer; font-weight: 600; }
-.setup-buttons .back { background: #f5f7fa; color: #666; }
-.setup-buttons .next { background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); color: white; }
-.setup-buttons .next:disabled { opacity: 0.4; cursor: not-allowed; }
+/* Mini setup (only for non-paid users coming without URL params) */
+.mini-setup-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000; }
+.mini-setup-card { background: white; border-radius: 20px; padding: 32px; max-width: 480px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.mini-setup-card h2 { font-size: 1.4rem; margin-bottom: 8px; }
+.mini-setup-card .sub { color: #666; margin-bottom: 20px; font-size: 0.9rem; }
+.mini-setup-card .opt { padding: 12px 16px; background: #f5f7fa; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; margin-bottom: 8px; transition: all 0.2s; }
+.mini-setup-card .opt:hover { border-color: #ee0979; background: #fff5f8; }
+.mini-setup-card .opt.selected { background: #fff5f8; border-color: #ee0979; color: #ee0979; font-weight: 600; }
+.mini-setup-card .opt input[type=text], .mini-setup-card .opt input[type=email] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; font-family: inherit; }
+.mini-setup-card .cta { margin-top: 20px; padding: 14px; background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); color: white; text-align: center; border-radius: 8px; cursor: pointer; font-weight: 600; }
+.mini-setup-card .cta:hover { opacity: 0.9; }
+.mini-setup-card .small { font-size: 0.8rem; color: #999; text-align: center; margin-top: 12px; }
 
 @media (max-width: 768px) {
   .container { padding: 12px; }
@@ -111,6 +108,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft
     </div>
   </div>
 
+  <div class="auto-banner" id="autoBanner" style="display:none;">
+    <h2>🎉 欢迎！你的 5 个 AI 智能体已自动部署</h2>
+    <p>买完直接用 — 无需设置。点下面的 tab 开始跟你的 AI 智能体对话。</p>
+  </div>
+
   <div class="url-banner" id="urlBanner" style="display:none;">
     <div>
       <strong>🔖 你的个人 AI 智能体 URL</strong>
@@ -125,66 +127,24 @@ body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft
   </div>
 </div>
 
-<!-- Setup wizard -->
-<div class="setup-overlay" id="setupOverlay">
-  <div class="setup-card">
+<!-- Mini setup (only shown for un-paid visitors) -->
+<div class="mini-setup-overlay" id="miniSetup" style="display:none;">
+  <div class="mini-setup-card">
     <h2>🚀 设置你的 AI 智能体</h2>
-    <p class="sub">5 步设置，1 分钟完成。设好后 5 个智能体立刻能用。</p>
-    <div class="progress"><div class="progress-bar" id="progressBar" style="width: 0%"></div></div>
+    <p class="sub">30 秒设置，开始使用。</p>
 
-    <div class="setup-step active" data-step="1">
-      <div class="q">1. 你想怎么称呼自己？</div>
-      <div class="opts">
-        <input type="text" id="setupName" placeholder="例如：力伟 / Liwei" style="padding: 14px 18px; border: 2px solid #e9ecef; border-radius: 12px; font-size: 1rem;">
-      </div>
+    <div class="opt">
+      <input type="text" id="setupName" placeholder="你的称呼（如 力伟 / Liwei）" style="width:100%;">
     </div>
 
-    <div class="setup-step" data-step="2">
-      <div class="q">2. 你的主要业务/背景？</div>
-      <div class="opts">
-        <div class="opt" data-value="freelancer">自由职业 / 副业</div>
-        <div class="opt" data-value="ecommerce">电商 / 卖货</div>
-        <div class="opt" data-value="content">内容创作 / 自媒体</div>
-        <div class="opt" data-value="local">本地商家 / 服务业</div>
-        <div class="opt" data-value="other">其他</div>
-      </div>
-    </div>
+    <div class="opt" data-value="resume" data-multi="true">📄 简历优化</div>
+    <div class="opt" data-value="content" data-multi="true">✍️ 内容生成</div>
+    <div class="opt" data-value="chatbot" data-multi="true">🤖 聊天机器人</div>
+    <div class="opt" data-value="lister" data-multi="true">📦 商品上架</div>
+    <div class="opt" data-value="assistant" data-multi="true">🧠 虚拟助理</div>
 
-    <div class="setup-step" data-step="3">
-      <div class="q">3. 你的目标客户主要在哪里？</div>
-      <div class="opts">
-        <div class="opt" data-value="wechat">微信 / 朋友圈 / 公众号</div>
-        <div class="opt" data-value="douyin">抖音 / 视频号 / 小红书</div>
-        <div class="opt" data-value="amazon">Amazon / eBay / 跨境电商</div>
-        <div class="opt" data-value="linkedin">LinkedIn / 海外 B2B</div>
-        <div class="opt" data-value="offline">线下 / 门店</div>
-      </div>
-    </div>
-
-    <div class="setup-step" data-step="4">
-      <div class="q">4. 你现在最想用 AI 解决什么问题？（可多选，但至少选 1 个）</div>
-      <div class="opts" id="multiOpts">
-        <div class="opt" data-value="resume" data-multi="true">📄 简历优化（求职/接单）</div>
-        <div class="opt" data-value="content" data-multi="true">✍️ 内容生成（公众号/小红书）</div>
-        <div class="opt" data-value="chatbot" data-multi="true">🤖 聊天机器人（客服/销售）</div>
-        <div class="opt" data-value="lister" data-multi="true">📦 商品上架（电商）</div>
-        <div class="opt" data-value="assistant" data-multi="true">🧠 虚拟助理（综合）</div>
-      </div>
-    </div>
-
-    <div class="setup-step" data-step="5">
-      <div class="q">5. 你的语言偏好？</div>
-      <div class="opts">
-        <div class="opt" data-value="zh">中文为主</div>
-        <div class="opt" data-value="en">英文为主</div>
-        <div class="opt" data-value="both">中英双语</div>
-      </div>
-    </div>
-
-    <div class="setup-buttons">
-      <button class="back" id="btnBack" onclick="prevStep()" style="visibility:hidden">← 上一步</button>
-      <button class="next" id="btnNext" onclick="nextStep()" disabled>下一步 →</button>
-    </div>
+    <div class="cta" onclick="finishMiniSetup()">开始使用 →</div>
+    <div class="small">没买？<a href="https://lwy9079.gumroad.com/l/hzylw" target="_blank" style="color: #ee0979;">$5 立即购买</a></div>
   </div>
 </div>
 
@@ -320,132 +280,142 @@ const SYSTEMS = {
   }
 };
 
+// ============ Tier → systems mapping ============
+const TIER_SYSTEMS = {
+  starter: ['resume', 'assistant'],         // $5
+  pro: ['resume', 'content', 'chatbot', 'lister', 'assistant'],  // $15
+  agency: ['resume', 'content', 'chatbot', 'lister', 'assistant'], // $25 - all
+};
+
 // ============ State ============
-let config = null;     // Setup config
-let isPaid = false;    // For demo: show paywall if not paid
+let config = null;
+let isPaid = false;
 let currentSystem = 'resume';
-const chatStates = {}; // {resume: [{role, content}], ...}
+const chatStates = {};
 
 // ============ Init ============
 function init() {
-  // Check URL for personal token
+  // 1. Check URL token (auto-deploy)
+  const params = new URLSearchParams(window.location.search);
   const hash = window.location.hash;
-  if (hash.startsWith('#me=')) {
+
+  let tokenData = null;
+  // Try query param first
+  const tokenParam = params.get('token');
+  if (tokenParam) {
     try {
-      const tokenData = JSON.parse(atob(decodeURIComponent(hash.substring(4))));
-      config = tokenData.config;
-      isPaid = tokenData.paid === true;
-      saveConfig();
-    } catch (e) {
-      console.log('Invalid token:', e);
-    }
+      tokenData = JSON.parse(atob(decodeURIComponent(tokenParam)));
+    } catch (e) { console.log('Bad query token:', e); }
+  }
+  // Then hash token
+  if (!tokenData && hash.startsWith('#me=')) {
+    try {
+      tokenData = JSON.parse(atob(decodeURIComponent(hash.substring(4))));
+    } catch (e) { console.log('Bad hash token:', e); }
   }
 
-  // Check localStorage
-  if (!config) {
-    const stored = localStorage.getItem('my_agents_config');
-    if (stored) {
-      try {
-        config = JSON.parse(stored);
-        isPaid = localStorage.getItem('my_agents_paid') === 'true';
-      } catch (e) { console.log(e); }
-    }
-  }
-
-  if (!config) {
-    showSetup();
+  if (tokenData && tokenData.paid) {
+    // Auto-deploy mode
+    isPaid = true;
+    config = {
+      name: tokenData.name || 'Customer',
+      email: tokenData.email || '',
+      tier: tokenData.tier || 'agency',
+      systems: tokenData.systems || TIER_SYSTEMS[tokenData.tier] || Object.keys(SYSTEMS),
+      lang: tokenData.lang || 'zh',
+      createdAt: tokenData.createdAt || new Date().toISOString(),
+      autoDeployed: true,
+    };
+    saveConfig();
+    showAutoDeployed();
+    buildUI();
+    showUrlBanner();
+    switchSystem(config.systems[0] || 'resume');
     return;
   }
 
-  hideSetup();
-  buildUI();
-  showUrlBanner();
-  switchSystem('resume');
-}
-
-// ============ Setup Wizard ============
-let currentStep = 1;
-const answers = {};
-
-function showSetup() {
-  document.getElementById('setupOverlay').style.display = 'flex';
-  updateStep();
-}
-
-function hideSetup() {
-  document.getElementById('setupOverlay').style.display = 'none';
-}
-
-function updateStep() {
-  document.querySelectorAll('.setup-step').forEach(s => s.classList.remove('active'));
-  const step = document.querySelector(`.setup-step[data-step="${currentStep}"]`);
-  if (step) step.classList.add('active');
-  document.getElementById('progressBar').style.width = ((currentStep - 1) / 4 * 100) + '%';
-  document.getElementById('btnBack').style.visibility = currentStep === 1 ? 'hidden' : 'visible';
-  document.getElementById('btnNext').textContent = currentStep === 5 ? '完成 ✓' : '下一步 →';
-  updateNextButton();
-}
-
-function updateNextButton() {
-  const step = document.querySelector(`.setup-step[data-step="${currentStep}"]`);
-  let enabled = false;
-  if (currentStep === 1) {
-    enabled = document.getElementById('setupName').value.trim().length > 0;
-  } else if (currentStep === 4) {
-    enabled = document.querySelectorAll('.setup-step[data-step="4"] .opt.selected').length > 0;
-  } else {
-    enabled = document.querySelector(`.setup-step[data-step="${currentStep}"] .opt.selected`) !== null;
-  }
-  document.getElementById('btnNext').disabled = !enabled;
-}
-
-function nextStep() {
-  if (currentStep === 5) {
-    finishSetup();
+  // 2. Check URL ?paid=true&tier=X&email=Y (generic auto-deploy)
+  if (params.get('paid') === 'true') {
+    isPaid = true;
+    const tier = params.get('tier') || 'agency';
+    const email = params.get('email') || '';
+    const name = params.get('name') || (email ? email.split('@')[0] : 'Customer');
+    config = {
+      name: name,
+      email: email,
+      tier: tier,
+      systems: TIER_SYSTEMS[tier] || TIER_SYSTEMS.agency,
+      lang: params.get('lang') || 'zh',
+      createdAt: new Date().toISOString(),
+      autoDeployed: true,
+    };
+    saveConfig();
+    showAutoDeployed();
+    buildUI();
+    showUrlBanner();
+    switchSystem(config.systems[0] || 'resume');
     return;
   }
-  // Save current step answer
-  if (currentStep === 1) {
-    answers.name = document.getElementById('setupName').value.trim();
-  } else if (currentStep === 4) {
-    const selected = [...document.querySelectorAll('.setup-step[data-step="4"] .opt.selected')].map(el => el.dataset.value);
-    answers.systems = selected;
-  } else {
-    const selected = document.querySelector(`.setup-step[data-step="${currentStep}"] .opt.selected`);
-    if (selected) answers[['business','customer','systems','lang'][currentStep-2]] = selected.dataset.value;
+
+  // 3. Check localStorage
+  const stored = localStorage.getItem('my_agents_config');
+  if (stored) {
+    try {
+      config = JSON.parse(stored);
+      isPaid = localStorage.getItem('my_agents_paid') === 'true';
+      buildUI();
+      showUrlBanner();
+      switchSystem(config.systems[0] || 'resume');
+      return;
+    } catch (e) { console.log(e); }
   }
-  currentStep++;
-  updateStep();
+
+  // 4. Show mini setup
+  showMiniSetup();
 }
 
-function prevStep() {
-  if (currentStep > 1) {
-    currentStep--;
-    updateStep();
-  }
+function showAutoDeployed() {
+  document.getElementById('autoBanner').style.display = 'block';
 }
 
-function finishSetup() {
-  answers.lang = document.querySelector(`.setup-step[data-step="5"] .opt.selected`).dataset.value;
+function showMiniSetup() {
+  document.getElementById('miniSetup').style.display = 'flex';
+}
+
+function hideMiniSetup() {
+  document.getElementById('miniSetup').style.display = 'none';
+}
+
+function finishMiniSetup() {
+  const name = document.getElementById('setupName').value.trim() || 'User';
+  const selected = [...document.querySelectorAll('.mini-setup-card .opt.selected')].map(el => el.dataset.value).filter(Boolean);
+  const systems = selected.length > 0 ? selected : ['resume', 'content', 'chatbot', 'lister', 'assistant'];
   config = {
-    name: answers.name || 'User',
-    business: answers.business,
-    customer: answers.customer,
-    systems: answers.systems || ['resume','content','chatbot','lister','assistant'],
-    lang: answers.lang,
+    name,
+    tier: 'starter',
+    systems,
+    lang: 'zh',
     createdAt: new Date().toISOString(),
   };
-  isPaid = true; // 演示模式：完成 setup 即视为已付费（实际应由 Gumroad webhook 验证）
+  // Mini setup is a "trial" — not really paid. But for demo, mark as paid.
+  isPaid = localStorage.getItem('my_agents_demo_unlocked') === 'true';
   saveConfig();
-  hideSetup();
+  hideMiniSetup();
   buildUI();
-  showUrlBanner();
-  switchSystem('resume');
+  switchSystem(systems[0] || 'resume');
+  if (!isPaid) {
+    // Show paywall message in first chat
+    setTimeout(() => {
+      alert('🎁 演示模式：可以试用 1 次。\n\n正式版（不限次数 + 5 系统全开）请购买：https://lwy9079.gumroad.com/l/hzylw');
+    }, 500);
+  }
 }
 
 function saveConfig() {
-  localStorage.setItem('my_agents_config', JSON.stringify(config));
-  if (isPaid) localStorage.setItem('my_agents_paid', 'true');
+  if (config) {
+    localStorage.setItem('my_agents_config', JSON.stringify(config));
+    if (isPaid) localStorage.setItem('my_agents_paid', 'true');
+  }
 }
 
 function resetSetup() {
@@ -455,15 +425,12 @@ function resetSetup() {
     Object.keys(chatStates).forEach(k => localStorage.removeItem('agent_chat_' + k));
     config = null;
     isPaid = false;
-    currentStep = 1;
-    Object.keys(answers).forEach(k => delete answers[k]);
-    showSetup();
+    showMiniSetup();
   }
 }
 
 // ============ UI ============
 function buildUI() {
-  // Build tabs
   const tabsContainer = document.getElementById('tabsContainer');
   tabsContainer.innerHTML = '';
   const systems = config.systems && config.systems.length > 0 ? config.systems : Object.keys(SYSTEMS);
@@ -478,7 +445,6 @@ function buildUI() {
     tabsContainer.appendChild(btn);
   });
 
-  // Build chat panels
   const chatPanels = document.getElementById('chatPanels');
   chatPanels.innerHTML = '';
   systems.forEach(sysKey => {
@@ -506,7 +472,6 @@ function buildUI() {
     chatPanels.appendChild(panel);
   });
 
-  // Add enter key listener
   systems.forEach(sysKey => {
     document.getElementById(`input-${sysKey}`).addEventListener('keydown', e => {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -516,7 +481,6 @@ function buildUI() {
     });
   });
 
-  // Load chat history
   systems.forEach(sysKey => loadChat(sysKey));
 }
 
@@ -528,7 +492,6 @@ function switchSystem(sysKey) {
   document.querySelectorAll('.chat-panel').forEach(p => p.classList.remove('active'));
   const panel = document.querySelector(`.chat-panel[data-system="${sysKey}"]`);
   if (panel) panel.classList.add('active');
-  // Focus input
   setTimeout(() => {
     const input = document.getElementById(`input-${sysKey}`);
     if (input) input.focus();
@@ -539,7 +502,6 @@ function loadChat(sysKey) {
   const stored = localStorage.getItem('agent_chat_' + sysKey);
   chatStates[sysKey] = stored ? JSON.parse(stored) : [];
   renderMessages(sysKey);
-  // Show quick replies + welcome if empty
   if (chatStates[sysKey].length === 0) {
     const sys = SYSTEMS[sysKey];
     const qr = document.getElementById(`quickReplies-${sysKey}`);
@@ -630,7 +592,6 @@ async function sendMessage(sysKey) {
   document.getElementById(`sendBtn-${sysKey}`).disabled = true;
 
   addMessage(sysKey, 'user', text);
-  // Clear quick replies
   document.getElementById(`quickReplies-${sysKey}`).innerHTML = '';
 
   addTypingIndicator(sysKey);
@@ -655,7 +616,6 @@ async function sendMessage(sysKey) {
 async function callGemini(sysKey, userMessage) {
   const sys = SYSTEMS[sysKey];
   const history = chatStates[sysKey] || [];
-  // Build context
   const contextIntro = config ? `【用户背景】\n姓名：${config.name}\n业务：${config.business || '未指定'}\n目标客户：${config.customer || '未指定'}\n语言偏好：${config.lang}\n\n` : '';
   const fullPrompt = contextIntro + sys.systemPrompt;
   const fullMessages = [
@@ -674,11 +634,7 @@ async function callGemini(sysKey, userMessage) {
   const requestBody = {
     contents,
     systemInstruction: { parts: [{ text: fullPrompt }] },
-    generationConfig: {
-      temperature: 0.85,
-      maxOutputTokens: 2048,
-      topP: 0.95
-    },
+    generationConfig: { temperature: 0.85, maxOutputTokens: 2048, topP: 0.95 },
     safetySettings: [
       { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
       { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
@@ -698,7 +654,7 @@ async function callGemini(sysKey, userMessage) {
     throw new Error('API ' + response.status + ': ' + errText.substring(0, 200));
   }
   const data = await response.json();
-  const reply = data.candidates?.[0]?.content?.parts??.[0]?.text;
+  const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!reply) throw new Error('Empty response from Gemini');
   return reply;
 }
@@ -707,12 +663,19 @@ async function callGemini(sysKey, userMessage) {
 function showUrlBanner() {
   const banner = document.getElementById('urlBanner');
   const urlText = document.getElementById('urlText');
-  // Encode config into URL hash
-  const token = btoa(JSON.stringify({ config, paid: isPaid }));
-  const personalUrl = window.location.origin + window.location.pathname + '#me=' + encodeURIComponent(token);
+  // Build token from config (auto-deploy format)
+  const token = btoa(JSON.stringify({
+    paid: true,
+    name: config.name,
+    email: config.email || '',
+    tier: config.tier || 'agency',
+    systems: config.systems,
+    lang: config.lang,
+    createdAt: config.createdAt,
+  }));
+  const personalUrl = window.location.origin + window.location.pathname + '?token=' + encodeURIComponent(token);
   urlText.textContent = personalUrl;
-  // Update actual URL without reload
-  history.replaceState(null, '', '#me=' + encodeURIComponent(token));
+  history.replaceState(null, '', '?token=' + encodeURIComponent(token));
   banner.style.display = 'flex';
 }
 
@@ -726,20 +689,12 @@ function copyUrl() {
   });
 }
 
-// ============ Setup event listeners ============
+// ============ Mini setup event listeners ============
 document.addEventListener('click', e => {
-  if (e.target.classList.contains('opt') && !e.target.classList.contains('multi')) {
-    const step = e.target.closest('.setup-step');
-    step.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
-    e.target.classList.add('selected');
-    updateNextButton();
-  } else if (e.target.classList.contains('opt') && e.target.dataset.multi === 'true') {
+  if (e.target.classList.contains('opt') && e.target.dataset.multi === 'true') {
     e.target.classList.toggle('selected');
-    updateNextButton();
   }
 });
-
-document.getElementById('setupName').addEventListener('input', updateNextButton);
 
 init();
 </script>
