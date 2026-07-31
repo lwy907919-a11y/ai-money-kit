@@ -287,6 +287,78 @@ const TIER_SYSTEMS = {
   agency: ['resume', 'content', 'chatbot', 'lister', 'assistant'], // $25 - all
 };
 
+
+// ============ Paywall (Trial Limit) ============
+const TRIAL_LIMIT = 5; // 5 free messages per day
+function getTrialState() {
+  const today = new Date().toISOString().split('T')[0];
+  const stored = localStorage.getItem('my_agents_trial');
+  if (!stored) return { date: today, count: 0 };
+  const state = JSON.parse(stored);
+  if (state.date !== today) return { date: today, count: 0 };
+  return state;
+}
+function incrementTrial() {
+  const state = getTrialState();
+  state.count++;
+  localStorage.setItem('my_agents_trial', JSON.stringify(state));
+  return state.count;
+}
+function isTrialExhausted() {
+  // Real paid users bypass trial
+  if (isPaid) return false;
+  return getTrialState().count >= TRIAL_LIMIT;
+}
+function showPaywall(sysKey) {
+  const input = document.getElementById('input-' + sysKey);
+  const sendBtn = document.getElementById('sendBtn-' + sysKey);
+  if (input) { input.disabled = true; input.placeholder = '试用已用完 — 升级到完整版'; }
+  if (sendBtn) sendBtn.disabled = true;
+  // Show paywall banner in current panel
+  const messages = document.getElementById('messages-' + sysKey);
+  if (messages && !document.getElementById('paywallBanner-' + sysKey)) {
+    const paywall = document.createElement('div');
+    paywall.id = 'paywallBanner-' + sysKey;
+    paywall.style.cssText = 'background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); color: white; padding: 20px; border-radius: 12px; margin: 16px 0; text-align: center;';
+    paywall.innerHTML = `
+      <div style="font-size: 1.3rem; font-weight: 800; margin-bottom: 8px;">🔒 免费试用已用完</div>
+      <p style="margin: 0 0 12px; opacity: 0.95;">你已经用了 ${TRIAL_LIMIT} 条免费消息。升级到 AI Money Kit 获得：</p>
+      <ul style="text-align: left; max-width: 380px; margin: 12px auto; opacity: 0.95; font-size: 0.9rem;">
+        <li>✅ 无限对话次数（不设上限）</li>
+        <li>✅ 5 个 AI 智能体全开</li>
+        <li>✅ 永久个人 URL（多设备同步）</li>
+        <li>✅ 终身免费更新</li>
+      </ul>
+      <div style="margin-top: 12px;">
+        <a href="https://lwy9079.gumroad.com/l/hzylw" target="_blank" style="display: inline-block; background: white; color: #ee0979; padding: 12px 32px; border-radius: 24px; font-weight: 800; text-decoration: none; font-size: 1rem;">⭐ 立即升级 — $5 起</a>
+      </div>
+      <p style="margin-top: 12px; font-size: 0.8rem; opacity: 0.8;">一次性付费 · 无订阅 · 30 天回本保证</p>
+    `;
+    messages.appendChild(paywall);
+    messages.scrollTop = messages.scrollHeight;
+  }
+}
+function updateTrialIndicator() {
+  // Update header to show remaining free messages
+  const state = getTrialState();
+  const remaining = Math.max(0, TRIAL_LIMIT - state.count);
+  if (!isPaid && remaining <= 2 && remaining > 0) {
+    let indicator = document.getElementById('trialIndicator');
+    if (!indicator) {
+      indicator = document.createElement('div');
+      indicator.id = 'trialIndicator';
+      indicator.style.cssText = 'background: #fff3cd; color: #6d4c00; padding: 6px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;';
+      const brand = document.querySelector('.brand');
+      if (brand) brand.appendChild(indicator);
+    }
+    indicator.textContent = '🎁 还剩 ' + remaining + ' 条免费消息';
+  }
+  if (remaining === 0 && !isPaid) {
+    let indicator = document.getElementById('trialIndicator');
+    if (indicator) indicator.remove();
+  }
+}
+
 // ============ State ============
 let config = null;
 let isPaid = false;
@@ -487,6 +559,7 @@ function buildUI() {
   });
 
   systems.forEach(sysKey => loadChat(sysKey));
+  updateTrialIndicator();
 }
 
 function switchSystem(sysKey) {
@@ -585,7 +658,11 @@ function clearChat(sysKey) {
 }
 
 async function sendMessage(sysKey) {
-  if (!isPaid) {
+  if (!isPaid && isTrialExhausted()) {
+    showPaywall(sysKey);
+    return;
+  }
+  if (!isPaid && isTrialExhausted()) {
     alert('请先完成设置。');
     return;
   }
@@ -608,6 +685,15 @@ async function sendMessage(sysKey) {
     chatStates[sysKey].push({ role: 'user', content: text });
     chatStates[sysKey].push({ role: 'assistant', content: reply });
     localStorage.setItem('agent_chat_' + sysKey, JSON.stringify(chatStates[sysKey]));
+
+    // Increment trial counter and check
+    if (!isPaid) {
+      incrementTrial();
+      updateTrialIndicator();
+      if (isTrialExhausted()) {
+        setTimeout(() => showPaywall(sysKey), 500);
+      }
+    }
   } catch (e) {
     removeTypingIndicator(sysKey);
     addMessage(sysKey, 'ai', '❌ 出错了：' + e.message);
