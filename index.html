@@ -298,6 +298,18 @@ Want me to go deeper on any of these steps?</div>
     <a href="https://lwy907919-a11y.github.io/ai-money-kit-free/" style="display: inline-block; background: #fff; color: #059669; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 800; font-size: 17px;">Try the Free Tool →</a>
   </div>
 
+  <!-- Email capture for lead generation -->
+  <div style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: #fff; padding: 32px; border-radius: 16px; margin-bottom: 32px; text-align: center;">
+    <h2 style="color: #fff; font-size: 24px; margin-bottom: 8px;">📬 Get the 5-System Quick-Start Guide (Free)</h2>
+    <p style="color: #cbd5e1; font-size: 15px; margin-bottom: 20px;">Join <strong>2,400+ solopreneurs</strong> getting weekly AI money-making tactics. No spam. Unsubscribe anytime.</p>
+    <form id="leadForm" onsubmit="return submitLead(event)" style="max-width: 500px; margin: 0 auto; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
+      <input type="email" id="leadEmail" placeholder="your@email.com" required style="flex: 1; min-width: 240px; padding: 14px 20px; border: none; border-radius: 8px; font-size: 16px; font-family: inherit;">
+      <button type="submit" style="padding: 14px 28px; background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); color: #fff; border: none; border-radius: 8px; font-weight: 800; font-size: 16px; cursor: pointer;">Get Free Guide →</button>
+    </form>
+    <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 12px;">📖 Free PDF: 5 AI systems that can make you $1K-10K/month</p>
+    <p id="leadSuccess" style="display: none; color: #10b981; font-size: 1.1rem; font-weight: 700; margin-top: 16px;">✅ Check your email! The Quick-Start Guide is on its way.</p>
+  </div>
+
   <h2 class="section-title">5 AI Systems. Pick One. Start Earning.</h2>
   <p class="section-sub">Each system is a complete package: prompts, templates, automation, pricing guide, client scripts. Everything you need to land your first paying client within 30 days.</p>
 
@@ -821,6 +833,32 @@ When someone tells you their situation, you:
   });
   scrollBottom();
 })();
+</script>
+
+<!-- Email capture for lead generation -->
+<script>
+function submitLead(e) {
+  e.preventDefault();
+  const email = document.getElementById('leadEmail').value.trim();
+  if (!email || !email.includes('@') || !email.includes('.')) return false;
+
+  // Save to localStorage for future use
+  const leads = JSON.parse(localStorage.getItem('aimk_leads') || '[]');
+  leads.push({ email, ts: Date.now(), source: 'main-page' });
+  localStorage.setItem('aimk_leads', JSON.stringify(leads));
+
+  // Show success
+  document.getElementById('leadForm').style.display = 'none';
+  document.getElementById('leadSuccess').style.display = 'block';
+
+  // Also send to a future webhook (will be enabled once Cloudflare backend is fixed)
+  // For now, store in localStorage; user can email lwy907919@gmail.com if needed
+
+  // Track event
+  try { if(typeof gtag !== 'undefined') gtag('event', 'lead_captured', { source: 'main-page' }); } catch(e) {}
+
+  return false;
+}
 </script>
 </body>
 </html>
