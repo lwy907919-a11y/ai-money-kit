@@ -2,68 +2,188 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://lwy907919-a11y.github.io/ai-money-kit/</loc>
-    <lastmod>2026-07-23</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>1</priority>
   </url>
   <url>
-    <loc>https://lwy907919-a11y.github.io/ai-money-kit-cn/</loc>
-    <lastmod>2026-07-23</lastmod>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/demo/</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
-    <loc>https://lwy907919-a11y.github.io/ai-money-kit-free/</loc>
-    <lastmod>2026-07-12</lastmod>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/press/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/wizard.html</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-prompts-pack/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/vs-chatgpt-plus/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/vs-midjourney/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/best-ai-tools-2026/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/best-ai-for-freelancers/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/best-ai-for-small-business/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/best-ai-for-solopreneurs/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-real-estate/</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://lwy907919-a11y.github.io/ai-money-kit-members/</loc>
-    <lastmod>2026-07-16</lastmod>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-coaching-business/</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://lwy907919-a11y.github.io/buy/</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-marketing-agency/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://lwy907919-a11y.github.io/ai-agent-restaurant/</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/how-to-make-1k-month-ai/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://lwy907919-a11y.github.io/ai-agent-beauty/</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-side-hustle-2026/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://lwy907919-a11y.github.io/ai-agent-edu/</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/how-to-make-1000-with-ai/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://lwy907919-a11y.github.io/resume-ai/</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-money-kit-review/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://lwy907919-a11y.github.io/sell-on-xianyu/</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/best-ai-tools-under-10-dollars/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://lwy907919-a11y.github.io/ai-small-business/</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-business-ideas-2026/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-prompts-that-make-money/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-tools-for-freelancers/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/best-ai-for-content-creation/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/best-ai-for-small-business-owners/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/how-to-start-ai-business/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-resume-service-business/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-content-business/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-chatbot-business/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-agents-vs-chatgpt/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/cheaper-than-chatgpt-plus/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://lwy907919-a11y.github.io/ai-money-kit/ai-tools-deal/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
 </urlset>
